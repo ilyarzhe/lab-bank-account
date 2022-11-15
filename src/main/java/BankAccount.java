@@ -5,13 +5,15 @@ public class BankAccount {
     private String lastName;
     private LocalDate dateOfBirth;
     private String accountNumber;
-    private double balance;
-    public BankAccount(String firstName, String lastName,LocalDate dateOfBirth, String accountNumber){
+    private Double balance;
+    private String accountType;
+    public BankAccount(String firstName, String lastName,LocalDate dateOfBirth, String accountNumber,String accountType){
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.accountNumber = accountNumber;
-        this.balance = 0;
+        this.balance = 0.00;
+        this.accountType=accountType;
     }
     //Getters
     public String getFirstName(){
@@ -26,8 +28,11 @@ public class BankAccount {
     public String getAccountNumber(){
         return this.accountNumber;
     }
-    public double getBalance() {
+    public Double getBalance() {
         return this.balance;
+    }
+    public String getAccountType(){
+        return this.accountType;
     }
     //Setters
     public void setFirstName(String firstName){
@@ -42,7 +47,7 @@ public class BankAccount {
     public void setAccountNumber(String accountNumber){
         this.accountNumber = accountNumber;
     }
-    public void setBalance(int balance){
+    public void setBalance(double balance){
         if (balance<0){
             System.out.println("Can't set a negative balance, choose something else");
         } else {
@@ -50,14 +55,24 @@ public class BankAccount {
         }
 
     }
+    public void setAccountType(String accountType){
+        this.accountType = accountType;
+    }
     public void deposit(int amount){
         this.balance+=amount;
     }
     public void withdraw(int amount){
         this.balance-=amount;
     }
-    public void interest(){
-        this.balance*=1.05;
+    public void payInterest(){
+        if (this.accountType.equals("Savings")){
+           this.balance*=1.10;
+        } else if (this.accountType.equals("Current")) {
+            this.balance*= 1.05;
+        }
+
+
 
     }
+
 }

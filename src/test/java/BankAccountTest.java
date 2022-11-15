@@ -1,15 +1,13 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
-
 import java.time.LocalDate;
 
 public class BankAccountTest {
     private BankAccount testAccount;
     @BeforeEach
     public void setUp(){
-        testAccount = new BankAccount("Harry","Cheese-man", LocalDate.of(2000,12,5),"58376529");
+        testAccount = new BankAccount("Harry","Cheese-man", LocalDate.of(2000,12,5),"58376529","Current");
 
     }
 
@@ -34,6 +32,10 @@ public class BankAccountTest {
     @Test
     public void getBalanceTest(){
         assertThat(testAccount.getBalance()).isEqualTo(0);
+    }
+    @Test
+    public void getTypeTest(){
+        assertThat(testAccount.getAccountType()).isEqualTo("Current");
     }
     @Test
     public void setFirstNameTest(){
@@ -65,8 +67,13 @@ public class BankAccountTest {
     @Test
     public void setBalanceWithNegativeNumber(){
         int newBalance = -10;
-        testAccount.setBalance(-10);
+        testAccount.setBalance(newBalance);
         assertThat(testAccount.getBalance()).isEqualTo(0);
+    }
+    @Test
+    public void setAccountTypeTest(){
+        testAccount.setAccountType("Savings");
+        assertThat(testAccount.getAccountType()).isEqualTo("Savings");
     }
     @Test
     public void depositTest(){
@@ -82,10 +89,17 @@ public class BankAccountTest {
         assertThat(testAccount.getBalance()).isEqualTo(90);
     }
     @Test
-    public void interestTestWithWholeNumber(){
+    public void interestTestWithSavings(){
         testAccount.setBalance(100);
-        testAccount.interest();
-        assertThat(testAccount.getBalance()).isEqualTo(105.0);
+        testAccount.setAccountType("Savings");
+        testAccount.payInterest();
+        assertThat(testAccount.getBalance()).isEqualTo(100*1.1);
+    }
+    @Test
+    public void interestTestWithCurrent(){
+        testAccount.setBalance(500);
+        testAccount.payInterest();
+        assertThat(testAccount.getBalance()).isEqualTo(500*1.05);
     }
 
 }
